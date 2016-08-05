@@ -1,55 +1,37 @@
-class EquationParser {
+class EquationSolver {
   constructor(equation) {
-    this.equation = equation;
+    this.ep = new EquationParser(equation);
     this.operators = [];
     this.operands = [];
-    this.hasInvalidCharacter = false;
-    this.operatorRegex = /[\+\-\*\/\(\)]/;
   }
 
-  isNumber(character) {
-    return !!character.match(/[0-9]+/);
-  }
-
-  isOperator(character) {
-    return !!character.match(this.operatorRegex);
-  }
-
-  parenBalance() {
-    const openParens = this.equation.match(/\(/g);
-    const closeParens = this.equation.match(/\)/g);
-    const openCount = openParens ? openParens.length : 0;
-    const closeCount = closeParens ? closeParens.length : 0;
-    return openCount === closeCount;
-  }
-
-  isValidEquation() {
-    // Non-numeric and not an operator or empty parens
-    const hasInvalidCharacter = !!(this.equation.match(/[^0-9\*\-\(\)\+\/]/) || this.equation.match(/\(\)/));
-    // Unbalanced parens
-    return !hasInvalidCharacter && this.parenBalance();
-  }
-
-  parse() {
-    if(!this.isValidEquation()) {
-      return false;
+  solve(equationHash = { operators: null, operands: null }) {
+    if(!this.ep.parse()) {
+      console.log('Invalid equation!');
+      return;
+    } else {
+      this.operators = this.ep.operators;
+      this.operands = this.ep.operands;
     }
 
-    this.operands = this.equation.split(this.operatorRegex).filter(function(n) { return n !== ""});
-    this.operators = this.equation.split('').filter(function(n) { return !n.match(/\d/) })
-
-    return true;
-  }
-
-  solve() {
-    let operators = this.operators;
-    let numbers = this.operands;
-
+    let operators = equationHash.operators || this.operators;
+    let numbers = equationHash.operands || this.operands;
     let operand;
     let operator;
     let result;
 
-    // Simple case
+    if(operators.filter(function(n) {return n === '('}).length > 0) {
+      const openParenIndex = operators.indexOf('(');
+      const closeParenIndex = operators.lastIndexOf(')');
+      const interiorOperators = operators.slice(openParenIndex + 1, closeParenIndex);
+      const interiorOperands = numbers.slice(openParenIndex, closeParenIndex);
+
+      // cut out operators enclosed in parens
+      operators = operators.slice(0, openParenIndex).concat(operators.slice(closeParenIndex + 1));
+      // replace numbers with solution to nested equation
+      numbers = numbers.slice(0, openParenIndex).concat(this.solve({operators: interiorOperators, operands: interiorOperands}), numbers.slice(closeParenIndex));
+    }
+
     while (operators.length > 0) {
       operator = operators.shift();
 
@@ -74,19 +56,18 @@ class EquationParser {
           operand = numbers.shift();
           result = result / operand;
           break;
+
         default:
           result = result;
       }
     }
 
     return result;
-    // TODO: Call recursively for every set of parens
+    // TODO: Handle order of operations
   }
 }
 
-ep = new EquationParser('1+(2*3)-4');
-if(ep.parse()) {
-  console.log(ep.solve());
-} else {
-	console.log('Invalid equation!');
-}
+es = new EquationSolver('1+(2*3)-4');
+
+
+console.log(es.solve());
