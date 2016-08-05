@@ -1,48 +1,49 @@
-
 class EquationParser {
   constructor(equation) {
     this.equation = equation;
     this.operators = [];
-    this.numbers = [];
+    this.operands = [];
     this.hasInvalidCharacter = false;
+    this.operatorRegex = /[\+\-\*\/\(\)]/;
   }
 
   isNumber(character) {
-    return !!character.match(/[0-9]/);
+    return !!character.match(/[0-9]+/);
   }
 
   isOperator(character) {
-    return !!character.match(/[\+\-\*\/\(\)]/);
+    return !!character.match(this.operatorRegex);
+  }
+
+  parenBalance() {
+    const openParens = this.equation.match(/\(/g);
+    const closeParens = this.equation.match(/\)/g);
+    const openCount = openParens ? openParens.length : 0;
+    const closeCount = closeParens ? closeParens.length : 0;
+    return openCount === closeCount;
+  }
+
+  isValidEquation() {
+    // Non-numeric and not an operator or empty parens
+    const hasInvalidCharacter = !!(this.equation.match(/[^0-9\*\-\(\)\+\/]/) || this.equation.match(/\(\)/));
+    // Unbalanced parens
+    return !hasInvalidCharacter && this.parenBalance();
   }
 
   parse() {
-    let parenBalance = 0;
-    let character = "";
-
-    for (let i = 0; i < this.equation.length; i++) {
-      character = this.equation[i];
-      if(this.isNumber(character)){
-        this.numbers.push(parseInt(character));
-      } else if(this.isOperator(character)) {
-        this.operators.push(character);
-        if(character === '(') {
-          parenBalance += 1;
-        } else if(character === ')') {
-          parenBalance -= 1;
-        }
-      } else {
-        this.hasInvalidCharacter = true;
-      }
+    if(!this.isValidEquation()) {
+      return false;
     }
 
-    this.hasInvalidCharacter = this.hasInvalidCharacter || (parenBalance !== 0);
+    this.operands = this.equation.split(this.operatorRegex).filter(function(n) { return n !== ""});
+    this.operators = this.equation.split('').filter(function(n) { return !n.match(/\d/) })
 
-    return !this.hasInvalidCharacter;
+    return true;
   }
 
   solve() {
     let operators = this.operators;
-    let numbers = this.numbers;
+    let numbers = this.operands;
 
     let operand;
     let operator;
@@ -61,9 +62,17 @@ class EquationParser {
           operand = numbers.shift();
           result = result + operand;
           break;
+        case '-':
+          operand = numbers.shift();
+          result = result - operand;
+          break;
         case '*':
           operand = numbers.shift();
           result = result * operand;
+          break;
+        case '/':
+          operand = numbers.shift();
+          result = result / operand;
           break;
         default:
           result = result;
@@ -71,11 +80,13 @@ class EquationParser {
     }
 
     return result;
-    // Call recursively for every set of parens
+    // TODO: Call recursively for every set of parens
   }
 }
 
-ep = new EquationParser('2*4*2+8');
+ep = new EquationParser('2*(12/3)-1');
 if(ep.parse()) {
   console.log(ep.solve());
+} else {
+	console.log('Invalid equation!');
 }
