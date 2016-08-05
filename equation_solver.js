@@ -54,12 +54,12 @@ class EquationParser {
       operator = operators.shift();
 
       if(result === undefined) {
-        result = numbers.shift();
+        result = parseInt(numbers.shift());
       }
 
       switch(operator) {
         case '+':
-          operand = numbers.shift();
+          operand = parseInt(numbers.shift());
           result = result + operand;
           break;
         case '-':
@@ -84,7 +84,7 @@ class EquationParser {
   }
 }
 
-ep = new EquationParser('2*(12/3)-1');
+ep = new EquationParser('1+(2*3)-4');
 if(ep.parse()) {
   console.log(ep.solve());
 } else {
