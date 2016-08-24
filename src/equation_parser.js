@@ -18,13 +18,13 @@ class EquationParser {
     return openCount === closeCount;
   }
 
-  isValidEquation() {
-    return !hasInvalidCharacter() && this.parenBalance();
-  }
-
   hasInvalidCharacter() {
     // Non-numeric and not an operator or empty parens
     return !!(this.equation.match(/[^0-9\*\-\(\)\+\/]/) || this.equation.match(/\(\)/));
+  }
+
+  isValidEquation() {
+    return !this.hasInvalidCharacter() && this.parenBalance();
   }
 
   parse() {
