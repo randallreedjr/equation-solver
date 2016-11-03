@@ -19,10 +19,12 @@ class EquationParser {
   }
 
   isValidEquation() {
+    return !hasInvalidCharacter() && this.parenBalance();
+  }
+
+  hasInvalidCharacter() {
     // Non-numeric and not an operator or empty parens
-    const hasInvalidCharacter = !!(this.equation.match(/[^0-9\*\-\(\)\+\/]/) || this.equation.match(/\(\)/));
-    // Unbalanced parens
-    return !hasInvalidCharacter && this.parenBalance();
+    return !!(this.equation.match(/[^0-9\*\-\(\)\+\/]/) || this.equation.match(/\(\)/));
   }
 
   parse() {
