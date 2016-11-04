@@ -1,6 +1,6 @@
 class EquationParser {
-  constructor(equation) {
-    this.equation = equation;
+  constructor(equation = '') {
+    this.equation = equation.replace(/\s/g, '');
     this.operators = [];
     this.operands = [];
     this.operatorRegex = /[\+\-\*\/\(\)]/;
