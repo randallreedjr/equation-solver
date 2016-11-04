@@ -21,6 +21,7 @@ class EquationSolver {
     let result;
 
     if(operators.filter(function(n) {return n === '('}).length > 0) {
+      // to go from outside in, consider switching indexOf and lastIndexOf?
       const openParenIndex = operators.indexOf('(');
       const closeParenIndex = operators.lastIndexOf(')');
       const interiorOperators = operators.slice(openParenIndex + 1, closeParenIndex);
