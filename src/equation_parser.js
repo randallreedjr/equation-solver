@@ -6,10 +6,11 @@ class EquationParser {
     this.operatorRegex = /[\+\-\*\/\(\)]/;
   }
 
-  isOperator(character) {
-    return !!character.match(this.operatorRegex);
-  }
+  // isOperator(character) {
+  //   return !!character.match(this.operatorRegex);
+  // }
 
+// EquationValidtor?
   parenBalance() {
     const openParens = this.equation.match(/\(/g);
     const closeParens = this.equation.match(/\)/g);

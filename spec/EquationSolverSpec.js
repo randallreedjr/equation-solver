@@ -24,5 +24,10 @@ describe('EquationParser', () => {
       solver = new EquationSolver('2 + 2');
       expect(solver.solve()).toEqual(4);
     });
+
+    it('solves equation with multiple operations', () => {
+      solver = new EquationSolver('1+(2*3)-4');
+      expect(solver.solve()).toEqual(3);
+    });
   });
 });

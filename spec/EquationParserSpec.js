@@ -1,40 +1,40 @@
 describe('EquationParser', () => {
-  describe('isOperator', () => {
-    let ep;
-
-    beforeEach(() => {
-      ep = new EquationParser;
-    });
-
-    it('returns true for arithmetic operators', () => {
-      expect(ep.isOperator('+')).toEqual(true);
-      expect(ep.isOperator('-')).toEqual(true);
-      expect(ep.isOperator('*')).toEqual(true);
-      expect(ep.isOperator('/')).toEqual(true);
-    });
-
-    it('returns true for parens', () => {
-      expect(ep.isOperator('(')).toEqual(true);
-      expect(ep.isOperator(')')).toEqual(true);
-    });
-
-    it('returns false for a number', () => {
-      expect(ep.isOperator('1')).toEqual(false);
-      expect(ep.isOperator('99')).toEqual(false);
-    });
-
-    it('returns false for a letter', () => {
-      expect(ep.isOperator('a')).toEqual(false);
-      expect(ep.isOperator('word')).toEqual(false);
-    });
-
-    it('returns false for a special character', () => {
-      expect(ep.isOperator('&')).toEqual(false);
-      expect(ep.isOperator('#')).toEqual(false);
-      expect(ep.isOperator('[')).toEqual(false);
-      expect(ep.isOperator(']')).toEqual(false);
-    });
-  });
+  // describe('isOperator', () => {
+  //   let ep;
+  //
+  //   beforeEach(() => {
+  //     ep = new EquationParser;
+  //   });
+  //
+  //   it('returns true for arithmetic operators', () => {
+  //     expect(ep.isOperator('+')).toEqual(true);
+  //     expect(ep.isOperator('-')).toEqual(true);
+  //     expect(ep.isOperator('*')).toEqual(true);
+  //     expect(ep.isOperator('/')).toEqual(true);
+  //   });
+  //
+  //   it('returns true for parens', () => {
+  //     expect(ep.isOperator('(')).toEqual(true);
+  //     expect(ep.isOperator(')')).toEqual(true);
+  //   });
+  //
+  //   it('returns false for a number', () => {
+  //     expect(ep.isOperator('1')).toEqual(false);
+  //     expect(ep.isOperator('99')).toEqual(false);
+  //   });
+  //
+  //   it('returns false for a letter', () => {
+  //     expect(ep.isOperator('a')).toEqual(false);
+  //     expect(ep.isOperator('word')).toEqual(false);
+  //   });
+  //
+  //   it('returns false for a special character', () => {
+  //     expect(ep.isOperator('&')).toEqual(false);
+  //     expect(ep.isOperator('#')).toEqual(false);
+  //     expect(ep.isOperator('[')).toEqual(false);
+  //     expect(ep.isOperator(']')).toEqual(false);
+  //   });
+  // });
 
   describe('parenBalance', () => {
     it('returns true when parens are in balance', () => {

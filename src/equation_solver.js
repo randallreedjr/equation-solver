@@ -1,21 +1,20 @@
 class EquationSolver {
   constructor(equation) {
     this.ep = new EquationParser(equation);
-    this.operators = [];
-    this.operands = [];
-  }
-
-  solve(equationHash = { operators: null, operands: null }) {
-    if(!this.ep.parse()) {
-      console.log('Invalid equation!');
-      return;
-    } else {
+    if(this.ep.parse()) {
       this.operators = this.ep.operators;
       this.operands = this.ep.operands;
+    } else {
+      this.operators = [];
+      this.operands = [];
     }
+    // equationParser = new EquationParser;
+    // [this.operators, this.operands] = equationParser.parse(equation);
+  }
 
-    let operators = equationHash.operators || this.operators;
-    let numbers = equationHash.operands || this.operands;
+  solve(equationHash = { operators: this.operators, operands: this.operands }) {
+    let operators = equationHash.operators;
+    let numbers = equationHash.operands;
     let operand;
     let operator;
     let result;
@@ -37,9 +36,11 @@ class EquationSolver {
       operator = operators.shift();
 
       if(result === undefined) {
+        // when would this happen?
         result = parseInt(numbers.shift());
       }
 
+      // polymorphsim
       switch(operator) {
         case '+':
           operand = parseInt(numbers.shift());
